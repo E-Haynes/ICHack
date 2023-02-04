@@ -59,12 +59,12 @@ openai.api_key = "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"
 recipeCommand = ""
 
 products1 = {
-    "name":("apples", "lucozade", "coconuts"),
+    "name":("strawberry", "chocolate", "marshmellows"),
     "size":("200", None, "350")
 }
 
 def createPrompt(products):
-    start = "Come up with a few recipes including "
+    start = "Come up with a recipe including "
     weight_name_connection = ' g of '
     mid = ""
     connector = " and "
@@ -108,6 +108,23 @@ def createRecipes(prompt):
 
 recipes = createRecipes(f'{message} \n')
 print(recipes)
+
+recipeTitle = recipes.partition('\n')[2]
+print(recipeTitle)
+
+def recipeImage(prompt):
+    response = openai.Image.create(
+    prompt=prompt,
+    n=1,
+    size="1024x1024"
+    )
+    image_url = response['data'][0]['url']
+    return image_url
+
+
+recipeImageURL = recipeImage(recipeTitle)
+print(recipeImageURL)
+
 
 def index(request):
     context = {}
