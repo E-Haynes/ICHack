@@ -10,6 +10,8 @@ import json
 
 import requests
 import openfoodfacts
+import os
+import openai
 
 url = "https://api.edamam.com/api/food-database/v2/parser"
 querystring = {"ingr":"apple", "nutrition-type":"cooking"#}
@@ -49,8 +51,65 @@ def get_product(code):
         d['imageURL'] = None
     return d
 
-product = get_product('8002270506833')
+product = get_product('')
 print (product)
+
+openai.api_key = "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"
+
+recipeCommand = ""
+
+products1 = {
+    "name":("apples", "lucozade", "coconuts"),
+    "size":("200", None, "350")
+}
+
+def createPrompt(products):
+    start = "Come up with a few recipes including "
+    weight_name_connection = ' g of '
+    mid = ""
+    connector = " and "
+    ending = " and nothing else.\n"
+    msg = ""
+
+    for index, item in enumerate(products["name"]):
+        if(index == 0):
+            if(products["size"][index] is not None):
+                mid = f'{products["size"][index]} g of {item}'
+            else:
+                mid = f'{item}'
+        else:
+            if(products["size"][index] is not None):
+                mid = mid + connector + f'{products["size"][index]} g of {item}'
+            else:
+                mid = mid + connector + f'{item}'
+            
+
+
+
+    msg = start + mid + ending
+    return msg
+
+
+message = createPrompt(products1)
+print(message)
+
+
+def createRecipes(prompt):
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        temperature=2,
+        max_tokens=4000,
+        top_p=1,
+        frequency_penalty=0.0,
+        presence_penalty=0.0,
+        best_of=1,
+        stop=["\n"]
+    )
+    print(response["choices"][0]["text"])
+
+recipes = createRecipes(f'message \n')
+print(recipes)
 
 def index(request):
     context = {}
