@@ -1,0 +1,16 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<h2>Enter Expiry Date</h2>
+<form method="POST">
+    <div class="form-group">
+      <label for="expiryDate">Expiry Date</label>
+      <input name="expiryDate" id="expiryDate" class="form-control" type="date" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Finish addition</button>
+  </form>
+
+</div>
+
+{% endblock %}

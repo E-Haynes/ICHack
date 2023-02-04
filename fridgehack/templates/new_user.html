@@ -1,0 +1,68 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<div class="m-5">
+<p>
+Hello, Welcome to FridgeHack!
+</p>
+
+<p>
+The way to quickly organise your fridge to live more sustainably and save $$$ :D
+</p>
+
+<p>
+Before we start, we need to collect the following from you:
+</p>
+
+<form method="POST">
+    <div class="form-group">
+      <label for="firstName">First name</label>
+      <input name="firstname" type="text" class="form-control" id="firstName" aria-describedby="emailHelp" placeholder="First name">
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last name</label>
+        <input name="lastname" type="text" class="form-control" id="lastName" aria-describedby="emailHelp" placeholder="Last name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="numberofshelvesfridge">Number of Shelves in Fridge</label>
+      <select name="numberofshelvesfridge" id="numberofshelvesfridge" class="form-select form-select mb-3" aria-label=".form-select-lg example">
+        <option selected>Select number of shelves</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        <option value="4">Four</option>
+        <option value="5">Five</option>
+        <option value="6">Six</option>
+        <option value="7">Seven</option>
+        <option value="8">Eight</option>
+        <option value="9">Nine</option>
+        <option value="10">Ten</option>
+      </select>
+      </div>
+      <div class="form-group">
+      <label for="numberofshelvesfreezer">Number of Shelves in Freezer</label>
+
+      <select name="numberofshelvesfreezer" class="form-select form-select mb-3" aria-label=".form-select-lg example">
+        <option selected>Select number of shelves</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        <option value="4">Four</option>
+        <option value="5">Five</option>
+        <option value="6">Six</option>
+        <option value="7">Seven</option>
+        <option value="8">Eight</option>
+        <option value="9">Nine</option>
+        <option value="10">Ten</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Next</button>
+  </form>
+
+</div>
+{% endblock %}

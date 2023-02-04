@@ -19,4 +19,11 @@ from core import views
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('register', views.start_flow, name="start_flow"),
+    path('scan_a_product', views.scan_a_product, name="scan_a_product"),
+    path('select_a_shelf/<str:upc>', views.select_a_shelf, name="select_a_shelf"),
+    path('finish_addition/<str:upc>/<str:shelf_id>', views.finish_addition, name="finish_addition"),
+    path('remove-item/<str:item_id>/', views.remove_item, name="remove_item"),
+    path('list_view/', views.list_view, name="list_view")
+
 ]

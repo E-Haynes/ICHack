@@ -1,0 +1,24 @@
+{% load core_extras %}
+{% include 'base.html' %}
+
+{% block main_content %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    </button>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+{% endfor %}
+<h1>List View</h1>
+Hello{%if request.user%} {{request.user}} {%endif%}!
+<br>
+<table class="table" id="list">
+    <tbody>
+        <tr>
+            Hello
+        </tr>
+</tbody>
+</table>
+{% endblock %}

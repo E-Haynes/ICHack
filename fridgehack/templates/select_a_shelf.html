@@ -1,0 +1,27 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<h2>Select a shelf</h2>
+<div class="alert alert-primary" role="alert">
+    <bold>Where do you want to place this item?</bold>
+    <p><bold>Brand: </bold> {{product.brand}}<br>
+        <bold>Name: </bold> {{product.productName}}<br>
+        <img src="{{product.imageURL}}" height="200">
+    </p>
+
+    
+  </div>
+  <table class="table" id="fridge">
+    <tbody>
+    {%for shelf_fridge in shelves_fridge%}
+    <tr><td>    <a href="/finish_addition/{{upc}}/{{shelf_fridge.pk}}">        Fridge Shelf #{{shelf_fridge.number|add:1}}    </a>    </td></tr>
+    {%endfor%}
+    {%for shelf_freezer in shelves_freezer%}
+    <tr><td class="bg-info">    <a href="/finish_addition/{{upc}}/{{shelf_freezer.pk}}">
+        Freezer Shelf #{{shelf_freezer.number|add:1}}    </a>
+    </td></tr>
+    {%endfor%}
+</tbody>
+</table>
+
+{% endblock %}
