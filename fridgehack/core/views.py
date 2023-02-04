@@ -12,6 +12,7 @@ from core.models import Fridge, Shelf, Recipe, UserProfile, UserAddedFoodItems
 import django.contrib.auth as auth
 import openfoodfacts
 from django.contrib import messages
+import openai
 
 def index(request):
     context = {}
@@ -115,4 +116,72 @@ def list_view(request):
     print(context['list_of_items'])
     return render(request, 'list_view.html', context)
 
+openai.api_key = "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"
+
+recipeCommand = ""
+
+products1 = {
+    "name":("apples", "lucozade", "coconuts"),
+    "size":("200", None, "350")
+}
+
+def createPrompt(products):
+    start = "Come up with a recipe with only a few ingredients from: "
+    weight_name_connection = ' g of '
+    mid = ""
+    connector = " and "
+    ending = " and nothing else.\n"
+    msg = ""
+
+    for index, item in enumerate(products["name"]):
+        if(index == 0):
+            if(products["size"][index] is not None):
+                mid = f'{products["size"][index]} g of {item}'
+            else:
+                mid = f'{item}'
+        else:
+            if(products["size"][index] is not None):
+                mid = mid + connector + f'{products["size"][index]} g of {item}'
+            else:
+                mid = mid + connector + f'{item}'
+            
+
+
+
+    msg = start + mid + ending
+    return msg
+
+def createRecipes(prompt):
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        temperature=0.7,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
+    )
+    return response.choices[0]['text']
+
+
+
+def yannis_test_view(request):
+    user_fridge = Fridge.objects.get(owner=request.user)
+    list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
     
+    products2 = {
+    "name":[],
+    "size":[]
+    }
+    for item in list_of_products:
+        if(item.productName):
+            products2['name'].append(item.productName)
+        else:
+            products2['name'].append(item.brand)
+
+        products2['size'].append(item.weight)
+
+    message = createPrompt(products2)
+    recipes = createRecipes(f'{message} \n')
+
+    return JsonResponse(recipes, safe=False)
