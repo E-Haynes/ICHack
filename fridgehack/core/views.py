@@ -23,15 +23,33 @@ querystring = {"ingr":"apple", "nutrition-type":"cooking"#}
 def get_product(code):
     d = dict()
     product = openfoodfacts.products.get_product(code)
-    d['brand'] = product['product']['brands']
-    d['productName'] = product['product']['product_name']
-    d['weight'] = product['product']['product_quantity']
-    d['servingWeight'] = product['product']['serving_quantity']
-    d['labels'] = product['product']['labels']
-    d['imageURL'] = product['product']['image_url']
+    try:
+        d['brand'] = product['product']['brands']
+    except:
+        d['brand'] = None
+    try:
+        d['productName'] = product['product']['product_name']
+    except:
+        d['productName'] = None
+    try:
+        d['weight'] = product['product']['product_quantity']
+    except:
+        d['weight'] = None
+    try:
+        d['servingWeight'] = product['product']['serving_quantity']
+    except:
+        d['servingWeight'] = None
+    try:
+        d['labels'] = product['product']['labels']
+    except:
+        d['labels'] = None
+    try:
+        d['imageURL'] = product['product']['image_url']
+    except:
+        d['imageURL'] = None
     return d
 
-product = get_product('3068320055008')
+product = get_product('8002270506833')
 print (product)
 
 def index(request):
