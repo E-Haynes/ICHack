@@ -11,4 +11,4 @@ import json
 def index(request):
     context = {}
 
-    return render(request, 'main.html', context)
+    return render(request, 'logo.html', context)
