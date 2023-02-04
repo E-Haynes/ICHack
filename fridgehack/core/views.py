@@ -112,6 +112,7 @@ def list_view(request):
     user_fridge = Fridge.objects.get(owner=request.user)
     print(user_fridge)
     context['list_of_items'] = UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
+    print(context['list_of_items'])
     return render(request, 'list_view.html', context)
 
     

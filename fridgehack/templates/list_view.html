@@ -16,9 +16,16 @@ Hello{%if request.user%} {{request.user}} {%endif%}!
 <br>
 <table class="table" id="list">
     <tbody>
+        {%for item in list_of_items %}
         <tr>
-            Hello
+            <td>
+                <img src="{{item.imageURL}}" height="100">
+                <p>{{item.productName}} - {{item.brand}} - {{item.expiry_date}}</p>
+                <p>{%if item.expiry_date|is_expiring_than_two_days %}<span class="badge text-bg-warning">EXPIRES SOON</span>{%endif%}</p>
+                <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
+            </td>
         </tr>
+        {%endfor%}
 </tbody>
 </table>
 {% endblock %}
