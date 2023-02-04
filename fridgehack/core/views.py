@@ -68,7 +68,7 @@ def createPrompt(products):
     weight_name_connection = ' g of '
     mid = ""
     connector = " and "
-    ending = " and nothing else.\n"
+    ending = " and nothing else."
     msg = ""
 
     for index, item in enumerate(products["name"]):
@@ -98,17 +98,15 @@ def createRecipes(prompt):
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
-        temperature=2,
-        max_tokens=4000,
+        temperature=0.7,
+        max_tokens=256,
         top_p=1,
-        frequency_penalty=0.0,
-        presence_penalty=0.0,
-        best_of=1,
-        stop=["\n"]
+        frequency_penalty=0,
+        presence_penalty=0,
     )
-    print(response["choices"][0]["text"])
+    return response.choices[0]['text']
 
-recipes = createRecipes(f'message \n')
+recipes = createRecipes(f'{message} \n')
 print(recipes)
 
 def index(request):
