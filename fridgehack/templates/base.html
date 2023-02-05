@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+  <style>
+    .backdrop {
+      width: 100%;
+      height: 100%;
+    }
+    .card {
+      border: #799673 !important;
+      border-radius: 5px;
+
+    }
+    p {
+      color: #799673;
+    }
+    h1, a, h2, h3, h4, h5, h6, nav {
+      font-family: 'Josefin Sans', sans-serif;
+      color: #131512;
+    }
+
+    p, span, body {
+      font-family: 'Lato', sans-serif;
+    }
+
+    .clr {
+      color: #799673
+    }
+    .b-clr {
+      background-color: #e7f0e6 !important
+    }
+
+    .btn-primary {
+      background-color: #799673 !important;
+      border: 1px solid #799673 !important;
+    }
+
+    .ofc {
+      object-fit: cover;
+    }
+
+    tr, td {
+      border: 0px !important;
+    }
+    .card-category {
+      background-size: cover;
+      background-position: center;
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    .shelf {
+      background: #79967356;
+      padding: 1em;
+      border-radius: 10px;
+    }
+    #qr-reader__dashboard_section_csr > span:nth-child(2) > button:nth-child(1) {
+      border: 0px;
+      background: 0;
+      padding: 5px;
+      color: #799673
+    }
+
+    #qr-reader__camera_selection, #qr-reader__dashboard_section_csr > div > button{
+      border: 0px;
+      border-radius: 8px;
+      background-color: #799673;
+      padding: 4px;
+      margin: 5px;
+      color: white;
+    }
+    .br-5 {
+      border-radius: 5px
+    }
+
+    #qr-reader {
+      border-radius: none;
+    }
+
+    #qr-reader__dashboard_section_swaplink {
+      text-decoration: none !important;
+      color: #799673;
+    }
+
+    #qr-reader__status_span {
+      background: none !important;
+    }
+
+    footer {
+      position: fixed !important;
+      bottom: 0 !important;
+      background-color: #799673;
+      color: white !important;
+      border-top: 1.5px solid;
+      margin-top: 200px;
+    }
+
+    </style>
+<body class="backdrop">
+
+    {% block main_content %}
+
+    {% endblock %}
+   
+    <nav class="navbar navbar-expand-lg bg-light b-clr">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">FridgeHack</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/list_view">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Fridge</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Recipes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Expiring soon</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <footer style="z-index:999;" class="p-4 w-100 ">
+     <div class="d-flex row justify-content-center">
+      <div class="col-3">
+        <a href="/list_view">
+          <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+          <svg fill="#000000" width="30px" height="30px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M12 2C8.6983746 2 6 4.6983746 6 8L6 42.417969C6 45.591903 8.832306 48 12 48L44 48L44 46L12 46C9.841694 46 8 44.378035 8 42.417969C8 40.457903 9.8001368 39 12 39L44 39L44 2L12 2 z M 12 4L42 4L42 37L12 37C10.506931 37 9.0923623 37.537598 8 38.417969L8 8C8 5.7796254 9.7796254 4 12 4 z M 33.478516 9.0019531C32.914622 8.9755909 32.332592 9.0418369 31.765625 9.171875C30.26004 9.5171926 28.751763 10.337476 27.589844 11.529297C27.588744 11.530397 27.589023 11.532103 27.587891 11.533203C25.901011 13.203233 25.818961 15.532469 26.279297 17.273438C26.348697 17.536476 26.550206 17.715336 26.675781 17.947266L14.328125 30.292969 A 1.0001 1.0001 0 1 0 15.742188 31.707031L28.085938 19.365234C28.331281 19.50015 28.526599 19.707665 28.806641 19.779297C30.547872 20.225618 32.829086 20.071245 34.558594 18.363281 A 1.0001 1.0001 0 0 0 34.558594 18.361328C35.718428 17.2152 36.531401 15.740505 36.871094 14.251953C37.210787 12.763401 37.077901 11.158782 36.013672 10.044922 A 1.0001 1.0001 0 0 0 35.992188 10.023438C35.444365 9.4818665 34.765931 9.1816949 34.035156 9.0605469C33.852463 9.03026 33.66648 9.0107405 33.478516 9.0019531 z M 16.277344 9.0078125 A 1.0001 1.0001 0 0 0 15.591797 9.2871094C13.504574 11.296662 13.47351 14.65906 15.521484 16.707031L19.935547 21.212891 A 1.0001 1.0001 0 1 0 21.365234 19.814453L16.943359 15.300781 A 1.0001 1.0001 0 0 0 16.935547 15.292969C15.909751 14.267173 15.764492 12.761938 16.408203 11.554688L23.013672 18.242188 A 1.0001 1.0001 0 1 0 24.435547 16.835938L16.998047 9.3046875 A 1.0001 1.0001 0 0 0 16.277344 9.0078125 z M 32.992188 11.007812C33.234896 10.99477 33.459747 11.005623 33.662109 11.037109C34.059855 11.098999 34.369199 11.242464 34.572266 11.4375C35.002938 11.896636 35.165656 12.738379 34.921875 13.806641C34.676568 14.881588 34.02351 16.078582 33.152344 16.939453C31.991851 18.08549 30.565503 18.165476 29.302734 17.841797C29.05989 17.779817 28.823813 17.644173 28.623047 17.445312 A 1.0001 1.0001 0 0 0 28.621094 17.443359C28.418039 17.242851 28.27887 17.004906 28.214844 16.761719 A 1.0001 1.0001 0 0 0 28.212891 16.761719C27.875522 15.485807 27.950176 13.982917 28.994141 12.951172 A 1.0001 1.0001 0 0 0 29.009766 12.935547C29.876907 12.041508 31.108802 11.374325 32.212891 11.121094C32.488913 11.057786 32.749479 11.020855 32.992188 11.007812 z M 28.375 21.392578 A 1.0001 1.0001 0 0 0 27.683594 23.111328L28.574219 23.996094L27.011719 25.560547L26.220703 24.769531 A 1.0001 1.0001 0 1 0 24.806641 26.183594L26.304688 27.681641 A 1.0001 1.0001 0 0 0 27.71875 27.681641L29.992188 25.40625L36.330078 31.708984 A 1.0001 1.0001 0 1 0 37.740234 30.291016L29.09375 21.693359 A 1.0001 1.0001 0 0 0 28.375 21.392578 z"/></svg>
+
+        </a>
+      </div>
+      <div class="col-3">
+        <a href="/recipes_listing">
+            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+  <svg fill="#000000" width="30px" height="30px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14.69h-1.25V7.78a.62.62 0 0 0-.25-.47L8.4 2.7a.65.65 0 0 0-.81 0L2 7.31a.62.62 0 0 0-.22.47v6.91H.5V7.78a1.87 1.87 0 0 1 .68-1.44l5.62-4.6a1.88 1.88 0 0 1 2.39 0l5.63 4.6a1.87 1.87 0 0 1 .68 1.44z"/><path d="M11.05 12.11H9.8A1.72 1.72 0 0 0 8 10.49a1.72 1.72 0 0 0-1.8 1.62H5a3 3 0 0 1 3-2.87 3 3 0 0 1 3.05 2.87zm-6.1 0H6.2v2.58H4.95zm4.85 0h1.25v2.58H9.8z"/></svg>
+        </a>
+      </div>
+      <div class="col-3">
+        <a href="/">
+            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.5365 19.3206V4.67986C4.5365 3.66912 5.35586 2.84976 6.36659 2.84976H17.3472C18.3579 2.84976 19.1773 3.66912 19.1773 4.67986V19.3206C19.1773 20.3314 18.3579 21.1507 17.3472 21.1507H6.36659C5.35586 21.1507 4.5365 20.3314 4.5365 19.3206Z" stroke="#1C1C1C" stroke-width="1.69904" stroke-linecap="round"/>
+<path d="M4.53625 9.25487H19.177" stroke="#1C1C1C" stroke-width="1.69904" stroke-linecap="square"/>
+<path d="M8.19653 12L8.19653 15.6602" stroke="#1C1C1C" stroke-width="1.69904" stroke-linecap="round"/>
+<path d="M8.19653 5.59467L8.19653 6.50997" stroke="#1C1C1C" stroke-width="1.69904" stroke-linecap="round"/>
+</svg>
+        </a>
+      </div>
+      <div class="col-3">
+        <a href="profile">
+          <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="30px" height="30px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-miterlimit:10;stroke-width:1.95px;}</style></defs><circle class="cls-1" cx="12" cy="5.16" r="3.91"/><path class="cls-1" d="M17.34,12.52c3.24.66,5.41,1.93,5.41,3.39,0,1.91-3.79,3.51-8.8,3.84"/><path class="cls-1" d="M6.66,12.52c-3.24.66-5.41,1.93-5.41,3.39,0,2,4.28,3.71,9.75,3.89"/><polyline class="cls-1" points="8.09 16.89 11.02 19.82 8.09 22.75"/><path class="cls-1" d="M17.86,15.91v-1h0A5.86,5.86,0,0,0,12,9.07h0a5.86,5.86,0,0,0-5.86,5.86h0v1"/></svg>
+        </a>
+      </div>
+     </div>
+    </footer>
+</body>
+
+</html>

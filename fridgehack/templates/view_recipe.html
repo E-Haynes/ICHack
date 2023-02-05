@@ -1,0 +1,16 @@
+{% include 'base.html' %}
+<div class=" d-flex justify-content-center row p-4">
+
+  {% block main_content %}
+  <h2>Recipe</h2>
+  <img height="200" src="{{image_field}}">
+  <h3 class="p-2">{{recipeTitle}}</h3>
+  <p>
+      {{recipe|linebreaks}}
+  </p>
+  {%if can_favourite %}
+  <button class="btn btn-warning" onclick="window.location= '/favourite_recipe/{{recipepk}}'">Favourite</button>
+  {%endif%}
+
+  {% endblock %}
+</div>

@@ -1,0 +1,46 @@
+{% load core_extras %}
+{% include 'base.html' %}
+
+{% block main_content %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    </button>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+{% endfor %}
+<div class="justify-content-center d-flex row p-4">
+  <h1>Cookbook</h1>
+  <button onclick="window.location='/select_items_for_recipe'" class="btn btn-primary">Generate a recipe</button><br>
+  The following items are available in your fridge:
+  <br>
+  <table class="table" id="list">
+      <tbody>
+          {%for item in list_of_items %}
+          <tr>
+              <td>
+                <div class="row g-0">
+                  <div class="col-md-4" style="background-image: url({{item.imageURL}}); background-repeat: no-repeat; height: 200px">
+                    <!-- <img src="{{item.imageURL}}"  class="img-fluid rounded-start" height="50"> -->
+                  </div>
+                  <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{item.productName}}</h5>
+                    <p class="card-text"> {{item.brand}} {{item.expiry_date}}</p>
+                    <p class="card-text"><small class="text-muted">{{item.expiry_date}}</small></p>
+                    {%if item.expiry_data %}
+                    <p>{%if item.expiry_date|is_expiring_than_two_days %}<span class="badge text-bg-warning">EXPIRES SOON</span>{%endif%}</p>
+                    {%endif%}
+                    <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
+                  </div>
+                </div>
+              </td>
+          </tr>
+          {%endfor%}
+  </tbody>
+  </table>
+</div>
+{% endblock %}
+

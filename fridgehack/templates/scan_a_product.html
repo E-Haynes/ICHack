@@ -1,0 +1,48 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<div class="p-4 justify-content-center">
+  <h2>Scan a Product</h2>
+  <form method="POST">
+      <div class="form-group">
+        <label for="upc">UPC</label>
+        <input name="upc" type="text" class="form-control" id="upc" placeholder="UPC">
+
+        <div class = "container py-4">
+          <div class="row">
+              <br>
+              <center class="p-0"><div id="qr-reader" class="qr-reader-custom"></div></center>
+          </div>
+      </div>
+      <script>
+          function onScanSuccess(decodedText, decodedResult) {
+              window.alert(`Code scanned = ${decodedText}`, decodedResult);
+          }
+          var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+              fps: 10,
+              qrbox: 250
+          });
+          html5QrcodeScanner.render(onScanSuccess);
+          var html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+              fps: 10,
+              qrbox: 250
+          });
+
+          function onScanSuccess(decodedText, decodedResult) {
+              // Handle on success condition with the decoded text or result.
+              document.getElementById('upc').value = decodedText
+              // window.alert(`Scan result: ${decodedText}`, decodedResult);
+              // ...
+              html5QrcodeScanner.clear();
+              // ^ this will stop the scanner (video feed) and clear the scan area.
+          }
+
+          html5QrcodeScanner.render(onScanSuccess);
+      </script>
+      <div class="d-flex justify-content-center p-4">
+        <button onclick="" type="submit" class="btn btn-primary">Next</button>
+      </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
