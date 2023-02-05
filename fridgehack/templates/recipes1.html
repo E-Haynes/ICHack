@@ -1,10 +1,21 @@
 {% include 'base.html' %}
 
 {% block main_content %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    </button>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+{% endfor %}
 {%for recipe in recipes %}
-<img height="200" src="{{recipeImageURL}}">
-<h3>{{recipeTitle}}</h3>
+<a href="/view_recipe/{{recipe.recipe.pk}}">
+<img height="200" src="{{recipe.recipe.imageURL}}">
+<h3>{{recipe.recipe.title}}</h3>
+</a>
+<button onclick="window.location='/remove-fav/{{recipe.recipe.pk}}'" class="btn-danger btn">Remove</button>
 <hr>
-<button class="btn btn-warning" onclick="window.location= '/favourite_recipe/{{recipepk}}'">Favourite</button>
 {% endfor %}
 {% endblock %}

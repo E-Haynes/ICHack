@@ -238,9 +238,17 @@ def view_recipe(request, recipe_id):
 def favourite_recipe(request, recipe_id):
     recipe_obj = Recipe.objects.get(pk=recipe_id)
     FavouriteRecipes.objects.create(author=request.user, recipe=recipe_obj)
-    return redirect('/recipes')
+    return redirect('/recipes_listing')
 
 def recipes_listing(request):
     context = {}
     context['recipes'] = FavouriteRecipes.objects.filter(author=request.user)
     return render(request, 'recipes1.html', context)
+
+def remove_favourite(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    item_to_remove = FavouriteRecipes.objects.get(recipe=recipe, author=request.user)
+    messages.error(request, f'{item_to_remove.recipe.title} removed from favourites.')
+    item_to_remove.delete()
+
+    return redirect('/recipes_listing')

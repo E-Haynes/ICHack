@@ -29,7 +29,8 @@ urlpatterns = [
     path('generate_a_recipe', views.generate_a_recipe, name="generate_a_recipe"),
     path('view_recipe/<str:recipe_id>', views.view_recipe, name="view_a_recipe"),
     path('favourite_recipe/<str:recipe_id>', views.favourite_recipe, name="view_a_recipe"),
-    path('recipes_listing/', views.recipes_listing, name="recipes_listing")
+    path('recipes_listing/', views.recipes_listing, name="recipes_listing"),
+    path('remove-fav/<str:recipe_id>', views.remove_favourite, name="remove-fav")
 
 
 ]
