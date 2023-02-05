@@ -200,9 +200,13 @@ def recipeImage(prompt):
 
 def generate_a_recipe(request):
     context = {}
+    final = []
+    list_pks = list(request.POST.items())
+    for item in list_pks:
+        final.append(item[0])
 
     user_fridge = Fridge.objects.get(owner=request.user)
-    list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
+    list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge,pk__in=final).order_by('expiry_date')
     
     products2 = {
     "name":[],
@@ -261,6 +265,12 @@ def recipes_listing(request):
     context = {}
     context['recipes'] = FavouriteRecipes.objects.filter(author=request.user)
     return render(request, 'recipes1.html', context)
+
+def select_items_for_recipe(request):
+    context = {}
+    user_fridge = Fridge.objects.get(owner=request.user)
+    context['list_of_items'] = UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
+    return render(request, 'select_items_for_recipe.html', context)
 
 def remove_favourite(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
