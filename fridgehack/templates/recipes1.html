@@ -12,7 +12,7 @@
 {% endfor %}
 {%for recipe in recipes %}
 <a href="/view_recipe/{{recipe.recipe.pk}}">
-<img height="200" src="{{recipe.recipe.imageURL}}">
+<img height="200" src="{%if recipe.recipe.image_field %} {{recipe.recipe.image_field.url}} {%endif%}">
 <h3>{{recipe.recipe.title}}</h3>
 </a>
 <button onclick="window.location='/remove-fav/{{recipe.recipe.pk}}'" class="btn-danger btn">Remove</button>

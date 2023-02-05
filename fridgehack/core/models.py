@@ -36,7 +36,7 @@ class Recipe(models.Model):
     title = models.TextField(default="", null=True, blank=True)
     imageURL = models.TextField(default="", null=True, blank=True)
     recipe = models.TextField(default="", null=True, blank=True)
-
+    image_field = models.ImageField(blank=True, null=True)
 
 class UserProfile(models.Model):
     author = models.ForeignKey(to=User,on_delete=models.SET_NULL,blank=True,null=True)

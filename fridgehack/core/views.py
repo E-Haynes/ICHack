@@ -13,6 +13,9 @@ import django.contrib.auth as auth
 import openfoodfacts
 from django.contrib import messages
 import openai
+from django.core import files
+from io import BytesIO
+import requests
 
 def index(request):
     context = {}
@@ -190,7 +193,7 @@ def recipeImage(prompt):
     response = openai.Image.create(
     prompt=prompt,
     n=1,
-    size="1024x1024"
+    size="256x256"
     )
     image_url = response['data'][0]['url']
     return image_url
@@ -224,6 +227,15 @@ def generate_a_recipe(request):
     context['recipe'] = recipes
 
     recipe_obj = Recipe.objects.create(title=recipeTitle,imageURL=recipeImageURL, recipe=recipes)
+    url = recipeImageURL
+    resp = requests.get(url)
+    
+
+    fp = BytesIO()
+    fp.write(resp.content)
+    file_name = url.split("/")[-1]  # There's probably a better way of doing this but this is just a quick example
+    recipe_obj.image_field.save(file_name+'.png', files.File(fp))
+
     return redirect('view_recipe/'+str(recipe_obj.pk))
 
 def view_recipe(request, recipe_id):
@@ -233,6 +245,11 @@ def view_recipe(request, recipe_id):
     context['recipeTitle'] = recipe_obj.title
     context['recipe'] = recipe_obj.recipe
     context['recipepk'] = recipe_obj.pk
+    if(recipe_obj.image_field):
+        context['image_field'] = recipe_obj.image_field.url
+    else:
+        context['image_field'] = None
+
     return render(request, 'view_recipe.html', context)
 
 def favourite_recipe(request, recipe_id):
@@ -252,3 +269,6 @@ def remove_favourite(request, recipe_id):
     item_to_remove.delete()
 
     return redirect('/recipes_listing')
+
+
+
