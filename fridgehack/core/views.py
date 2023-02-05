@@ -293,7 +293,7 @@ def remove_favourite(request, recipe_id):
     messages.error(request, f'{item_to_remove.recipe.title} removed from favourites.')
     item_to_remove.delete()
 
-    return redirect('/recipes_listing')
+    return redirect('/list_view/')
 
 def sam_email(request):
     context = {}
