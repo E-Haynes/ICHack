@@ -144,7 +144,7 @@ def createPrompt(products):
                 mid = mid + connector + f'{products["size"][index]} g of {item}'
             else:
                 mid = mid + connector + f'{item}'
-            
+
 
 
 
@@ -168,7 +168,7 @@ def createRecipes(prompt):
 def yannis_test_view(request):
     user_fridge = Fridge.objects.get(owner=request.user)
     list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
-    
+
     products2 = {
     "name":[],
     "size":[]

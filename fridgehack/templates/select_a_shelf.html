@@ -1,24 +1,27 @@
 {% include 'base.html' %}
 
 {% block main_content %}
-<h2>Select a shelf</h2>
-<div class="alert alert-primary" role="alert">
-    <bold>Where do you want to place this item?</bold>
-    <p><bold>Brand: </bold> {{product.brand}}<br>
-        <bold>Name: </bold> {{product.productName}}<br>
-        <img src="{{product.imageURL}}" height="200">
+<div class="d-flex justify-content-center p-2">
+  <h2>Select a shelf</h2>
+</div>
+<h6 class="p-2 d-flex justify-content-center">Where do you want to place this item?</h4>
+<div class="d-flex justify-content-center p-2 shelf-object">
+  <img  class=" br-5 col-5 py-2" src="{{product.imageURL}}" height="150" >
+  <p class="col-7"> <bold>{{product.productName}}</bold><br>
+      {{product.brand}}<br>
     </p>
+</div>
 
-    
+
   </div>
   <table class="table" id="fridge">
     <tbody>
     {%for shelf_fridge in shelves_fridge%}
-    <tr><td>    <a href="/finish_addition/{{upc}}/{{shelf_fridge.pk}}">        Fridge Shelf #{{shelf_fridge.number|add:1}}    </a>    </td></tr>
+    <tr><td>  <div class="shelf_fridge shelf">  <h6><a href="/finish_addition/{{upc}}/{{shelf_fridge.pk}}">        Fridge Shelf {{shelf_fridge.number|add:1}}    </a>   </h6> </div></td></tr>
     {%endfor%}
     {%for shelf_freezer in shelves_freezer%}
-    <tr><td class="bg-info">    <a href="/finish_addition/{{upc}}/{{shelf_freezer.pk}}">
-        Freezer Shelf #{{shelf_freezer.number|add:1}}    </a>
+    <tr><td> <div class="shelf shelf_freezer"><h6> <a href="/finish_addition/{{upc}}/{{shelf_freezer.pk}}">
+        Freezer Shelf {{shelf_freezer.number|add:1}}    </a></h6></div>
     </td></tr>
     {%endfor%}
 </tbody>
