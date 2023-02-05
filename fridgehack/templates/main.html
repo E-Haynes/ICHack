@@ -20,7 +20,7 @@
       <div><span class="shelf-item">Items</span>
         <br>
         {%for item in shelf_items|get_item:shelf_fridge.pk%}
-        <div style="text-align: center; background-color: #ffffffbd; padding: 1%; border-radius:25px;">
+        <div style="text-align: center; background-color: #ffffffbd; padding: 2.5%; margin:2.5% 0; border-radius:25px;">
           <div class="row">
             <div class="col-5">
               <img src="{{item.imageURL}}" height="100">
@@ -42,7 +42,7 @@
       <div><span class="shelf-item">Items</span>
         <br>
         {%for item in shelf_items|get_item:shelf_freezer.pk%}
-        <div style="text-align: center; background-color: white; padding: 1%; border-radius:25px;">
+        <div style="text-align: center; background-color: white; padding: 2.5%; margin:2.5% 0; border-radius:25px;">
           <img src="{{item.imageURL}}" height="100">
           <p>{{item.productName}} - {{item.brand}} - {{item.expiry_date}}</p>
           <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
