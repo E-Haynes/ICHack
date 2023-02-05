@@ -31,7 +31,8 @@ urlpatterns = [
     path('favourite_recipe/<str:recipe_id>', views.favourite_recipe, name="view_a_recipe"),
     path('recipes_listing/', views.recipes_listing, name="recipes_listing"),
     path('remove-fav/<str:recipe_id>', views.remove_favourite, name="remove-fav"),
-    path('select_items_for_recipe', views.select_items_for_recipe, name="select-items-for-recipe")
+    path('select_items_for_recipe', views.select_items_for_recipe, name="select-items-for-recipe"),
+    path('sam_email', views.sam_email, name="sam_email")
 
 
 

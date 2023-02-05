@@ -30,7 +30,9 @@
                     <h5 class="card-title">{{item.productName}}</h5>
                     <p class="card-text"> {{item.brand}} {{item.expiry_date}}</p>
                     <p class="card-text"><small class="text-muted">{{item.expiry_date}}</small></p>
+                    {%if item.expiry_data %}
                     <p>{%if item.expiry_date|is_expiring_than_two_days %}<span class="badge text-bg-warning">EXPIRES SOON</span>{%endif%}</p>
+                    {%endif%}
                     <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
                   </div>
                 </div>
@@ -41,3 +43,4 @@
   </table>
 </div>
 {% endblock %}
+

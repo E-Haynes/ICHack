@@ -253,6 +253,10 @@ def view_recipe(request, recipe_id):
     context['recipeTitle'] = recipe_obj.title
     context['recipe'] = recipe_obj.recipe
     context['recipepk'] = recipe_obj.pk
+    if(FavouriteRecipes.objects.filter(author=request.user, recipe=recipe_obj).exists()):
+        context['can_favourite'] = False
+    else:
+        context['can_favourite'] = True
     if(recipe_obj.image_field):
         context['image_field'] = recipe_obj.image_field.url
     else:
@@ -284,5 +288,13 @@ def remove_favourite(request, recipe_id):
 
     return redirect('/recipes_listing')
 
+def sam_email(request):
+    context = {}
+    last_four = FavouriteRecipes.objects.filter(author=request.user).order_by('-id')[:4][::-1]
+    context['first_item'] = last_four[0].recipe
+    context['second_item'] = last_four[1].recipe
+    context['third_item'] = last_four[2].recipe
+    context['fourth_item'] = last_four[3].recipe
 
+    return render(request, 'email2.htm', context)
 
