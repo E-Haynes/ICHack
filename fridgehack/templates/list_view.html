@@ -16,12 +16,12 @@
   <button onclick="window.location='/select_items_for_recipe'" class="btn btn-primary">Generate a recipe</button><br>
   <div class="justify-content-center row p-4">
   {%for recipe in recipes %}
-  <div class=" m-2">
-  
+  <div class="col-12 m-2 p-0">
+
       <a href="/view_recipe/{{recipe.recipe.pk}}">
-    <img height="200" src="{%if recipe.recipe.image_field %} {{recipe.recipe.image_field.url}} {%endif%}">
-    <br><br>  
-    <h3>{{recipe.recipe.title}}    
+    <img height="100px" width="100%" src="{%if recipe.recipe.image_field %} {{recipe.recipe.image_field.url}} {%endif%}">
+    <br><br>
+    <h3>{{recipe.recipe.title}}
     </h3>
       </a>
       <button onclick="window.location='/remove-fav/{{recipe.recipe.pk}}'" class="btn-danger btn btn-sm">Remove</button>
@@ -30,4 +30,3 @@
     {% endfor %}
   </div>
 {% endblock %}
-
