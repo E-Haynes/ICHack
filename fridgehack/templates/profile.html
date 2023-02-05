@@ -1,0 +1,10 @@
+{% include 'base.html' %}
+<div class=" d-flex justify-content-center row p-4">
+
+  {% block main_content %}
+  <h2>Profile</h2>
+  
+  <button class="btn btn-primary" onclick="window.location='/logout'">Logout</button>
+
+  {% endblock %}
+</div>

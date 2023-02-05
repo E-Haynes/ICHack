@@ -18,15 +18,18 @@ from io import BytesIO
 import requests
 
 def index(request):
-    context = {}
-    context['shelves_fridge'] = Shelf.objects.filter(fridge__owner=request.user, freezer=False).order_by('number')
-    context['shelves_freezer'] = Shelf.objects.filter(fridge__owner=request.user, freezer=True).order_by('number')
-    context['shelf_items'] = {}
-    for shelf in context['shelves_fridge']:
-        context['shelf_items'][shelf.pk] = UserAddedFoodItems.objects.filter(on_shelf=shelf.pk)
-    for shelf in context['shelves_freezer']:
-        context['shelf_items'][shelf.pk] = UserAddedFoodItems.objects.filter(on_shelf=shelf.pk)
-    return render(request, 'main.html', context)
+    if(not request.user.is_anonymous):
+        context = {}
+        context['shelves_fridge'] = Shelf.objects.filter(fridge__owner=request.user, freezer=False).order_by('number')
+        context['shelves_freezer'] = Shelf.objects.filter(fridge__owner=request.user, freezer=True).order_by('number')
+        context['shelf_items'] = {}
+        for shelf in context['shelves_fridge']:
+            context['shelf_items'][shelf.pk] = UserAddedFoodItems.objects.filter(on_shelf=shelf.pk)
+        for shelf in context['shelves_freezer']:
+            context['shelf_items'][shelf.pk] = UserAddedFoodItems.objects.filter(on_shelf=shelf.pk)
+        return render(request, 'main.html', context)
+    else:
+        return redirect('/login')
 
 def start_flow(request):
     context = {}
@@ -297,4 +300,28 @@ def sam_email(request):
     context['fourth_item'] = last_four[3].recipe
 
     return render(request, 'email2.htm', context)
+
+def login(request):
+    context = {}
+    if(request.method == 'POST'):
+        user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            auth.login(request, user)
+            return redirect('/')
+        else:
+            messages.error(request, f'Incorrect username or password.')
+            return render(request, 'login.html', context)
+    if(request.method == 'GET'):
+        return render(request, 'login.html', context)
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/login')
+
+def profile(request):
+    context = {}
+    return render(request, 'profile.html', context)
+
+
+
 
