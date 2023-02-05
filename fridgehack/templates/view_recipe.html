@@ -7,5 +7,7 @@
 <p>
     {{recipe|linebreaks}}
 </p>
+{%if can_favourite %}
 <button class="btn btn-warning" onclick="window.location= '/favourite_recipe/{{recipepk}}'">Favourite</button>
+{%endif%}
 {% endblock %}
