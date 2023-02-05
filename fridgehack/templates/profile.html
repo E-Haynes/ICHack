@@ -3,8 +3,15 @@
 
   {% block main_content %}
   <h2>Profile</h2>
+  <p>You are logged in as: {{request.user.first_name}} {{request.user.last_name}} ({{request.user.email}})</p>
   
   <button class="btn btn-primary" onclick="window.location='/logout'">Logout</button>
-
+ 
   {% endblock %}
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
