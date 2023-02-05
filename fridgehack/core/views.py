@@ -38,6 +38,8 @@ def start_flow(request):
     elif(request.method == 'POST'):
         print(request.POST)
         new_user = User.objects.create(first_name=request.POST['firstname'],last_name=request.POST['lastname'], email=request.POST['email'], username=request.POST['email'])
+        new_user.set_password(request.POST['password'])
+        new_user.save()
         user_fridge = Fridge.objects.create(owner = new_user)
         for shelf in range(int(request.POST['numberofshelvesfridge'])):
             Shelf.objects.create(fridge=user_fridge, number=shelf)
@@ -122,6 +124,8 @@ def list_view(request):
     context = {}
     user_fridge = Fridge.objects.get(owner=request.user)
     print(user_fridge)
+    context = {}
+    context['recipes'] = FavouriteRecipes.objects.filter(author=request.user)
     context['list_of_items'] = UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
     print(context['list_of_items'])
     return render(request, 'list_view.html', context)

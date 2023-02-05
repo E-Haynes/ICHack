@@ -11,11 +11,15 @@
   </div>
 </div>
 {% endfor %}
-<div class="p-4 d-flex justify-content-center">
-    <button onclick="window.location='/scan_a_product'" class="btn btn-primary">Scan an item</button>
+<div class=" justify-content-center text-align-center d-flex" style="flex-direction: column;">
+    <button  onclick="window.location='/scan_a_product'" class="btn btn-primary m-4">Scan an Item to Add to Fridge</button>
+    <!-- <button onclick="window.location='/scan_a_product'" class="btn btn-primary m-4">Meal Generator</button> -->
+
   </div>
-<div class="d-flex justify-content-center py-2"><p>This is your fridge, it shows the where items are kept and their expiry date.</p></div>
-<br>
+  <!-- <h4 class="mx-3">Favourite Recipes</h4> -->
+
+  <h4 class="mx-3">Fridge</h4>
+<div class="d-flex justify-content-center py-2"><p class="mx-3">This is your fridge, it shows the where items are kept and their expiry date.</p></div>
 <table class="table" id="fridge">
   <tbody>
     {%for shelf_fridge in shelves_fridge%}
@@ -55,5 +59,10 @@
       {%endfor%}
     </tbody>
   </table>
-
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   {% endblock %}

@@ -18,8 +18,42 @@
 
   {%endfor%}
   <br>
-  <button type="submit" class="btn btn-primary">Next</button>
+  <style>
+    .loader {
+    border: 16px solid #dbc3ea; /* Light grey */
+    border-top: 16px solid #799673; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  </style>
+  <div id="loader" class="loader" style="
+    display:none;
+    position: fixed;
+    top: 42%;
+    left: 35%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+"></div>
+
+    <link rel="stylesheet" href="loading.css">
+  
+  <button onclick="document.getElementById('loader').style.display = 'block'" type="submit" class="btn btn-primary">Next</button>
 
   </form>
+  <br>
+
   {% endblock %}
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
