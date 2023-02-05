@@ -12,6 +12,7 @@ import requests
 import openfoodfacts
 import os
 import openai
+import random
 
 url = "https://api.edamam.com/api/food-database/v2/parser"
 querystring = {"ingr":"apple", "nutrition-type":"cooking"#}
@@ -106,11 +107,11 @@ def createRecipes(prompt):
     )
     return response.choices[0]['text']
 
-recipes = createRecipes(f'{message} \n')
-print(recipes)
+#recipes = createRecipes(f'{message} \n')
+#print(recipes)
 
-recipeTitle = recipes.partition('\n')[2]
-print(recipeTitle)
+#recipeTitle = recipes.partition('\n')[2]
+#print(recipeTitle)
 
 def recipeImage(prompt):
     response = openai.Image.create(
@@ -122,8 +123,8 @@ def recipeImage(prompt):
     return image_url
 
 
-recipeImageURL = recipeImage(recipeTitle)
-print(recipeImageURL)
+#recipeImageURL = recipeImage(recipeTitle)
+#print(recipeImageURL)
 
 
 def index(request):
@@ -132,3 +133,29 @@ def index(request):
     result = 1+1
     context["result"] = result
     return render(request, 'main.html', context)
+
+
+def randomIndex(array: list):
+    y = int(random.randint(0, len(array)))
+    return array[y]
+
+motivationalPrompts = ["write something short to motivate me to be more sustainable", 
+            "write something short to motivate me to recycle",
+            "write something short to motivate me to waste less food",
+            "write something short to motivate me to use fewer fossil fuels"]
+
+motivationPrompt = randomIndex(motivationalPrompts)
+
+def sustainabilityMotivation(prompt):
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        temperature=0.7,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
+    )
+    return response.choices[0]['text']
+
+print(sustainabilityMotivation(motivationPrompt))
