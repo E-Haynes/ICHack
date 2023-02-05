@@ -11,39 +11,48 @@
   </div>
 </div>
 {% endfor %}
-Hello{%if request.user%} {{request.user}} {%endif%}!
+<div class="d-flex justify-content-center py-2"><p>Hello{%if request.user%} {{request.user}} {%endif%}!</p></div>
 <br>
-<button onclick="window.location='/scan_a_product'" class="btn btn-primary">Scan an item</button>
 <table class="table" id="fridge">
-    <tbody>
+  <tbody>
     {%for shelf_fridge in shelves_fridge%}
-    <tr><td>           Fridge Shelf #{{shelf_fridge.number|add:1}}   
-        <div>Items:
-            <br>
-            {%for item in shelf_items|get_item:shelf_fridge.pk%}
-            <div style="text-align: center; background-color: white; padding: 1%; border-radius:25px;">
-                <img src="{{item.imageURL}}" height="100">
-                <p>{{item.productName}} - {{item.brand}} - {{item.expiry_date}}</p>
-                <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
-                </div>
-                {%endfor%}               
-        </div>    
+    <tr><td>    <div class="shelf fridge-shelf">     <h6> Fridge Shelf {{shelf_fridge.number|add:1}} </h6>
+      <div><span class="shelf-item">Items</span>
+        <br>
+        {%for item in shelf_items|get_item:shelf_fridge.pk%}
+        <div style="text-align: center; background-color: #ffffffbd; padding: 1%; border-radius:25px;">
+          <div class="row">
+            <div class="col-5">
+              <img src="{{item.imageURL}}" height="100">
+            </div>
+            <div class="col-7">
+              <p>{{item.productName}} <br> {{item.brand}} <br> {{item.expiry_date}}</p>
+              <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      </div>
+      </div>
     </td></tr>
     {%endfor%}
     {%for shelf_freezer in shelves_freezer%}
-    <tr><td class="bg-info">    
-        Freezer Shelf #{{shelf_freezer.number|add:1}}  
-        <div>Items:
-            <br>
-            {%for item in shelf_items|get_item:shelf_freezer.pk%}
-            <div style="text-align: center; background-color: white; padding: 1%; border-radius:25px;">
-            <img src="{{item.imageURL}}" height="100">
-            <p>{{item.productName}} - {{item.brand}} - {{item.expiry_date}}</p>
-            <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
-            </div>
-            {%endfor%}        </div>
-    </td></tr>
-    {%endfor%}
-</tbody>
-</table>
-{% endblock %}
+    <tr><td class=""> <div class="shelf freezer-shelf">
+      <h6>Freezer Shelf {{shelf_freezer.number|add:1}} </h6>
+      <div><span class="shelf-item">Items</span>
+        <br>
+        {%for item in shelf_items|get_item:shelf_freezer.pk%}
+        <div style="text-align: center; background-color: white; padding: 1%; border-radius:25px;">
+          <img src="{{item.imageURL}}" height="100">
+          <p>{{item.productName}} - {{item.brand}} - {{item.expiry_date}}</p>
+          <button class="btn btn-danger" onclick="window.location = '/remove-item/{{item.pk}}'">Remove</button>
+        </div>
+        {%endfor%}        </div></div>
+      </td></tr>
+      {%endfor%}
+    </tbody>
+  </table>
+  <div class="p-4 d-flex justify-content-center">
+    <button onclick="window.location='/scan_a_product'" class="btn btn-primary">Scan an item</button>
+  </div>
+  {% endblock %}
