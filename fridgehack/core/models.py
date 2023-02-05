@@ -33,9 +33,16 @@ class UserAddedFoodItems(models.Model):
     expiry_date= models.DateField(null=True,blank=True)
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.TextField(default="", null=True, blank=True)
+    imageURL = models.TextField(default="", null=True, blank=True)
+    recipe = models.TextField(default="", null=True, blank=True)
+
 
 class UserProfile(models.Model):
     author = models.ForeignKey(to=User,on_delete=models.SET_NULL,blank=True,null=True)
+
+class FavouriteRecipes(models.Model):
+    author = models.ForeignKey(to=User,on_delete=models.SET_NULL,blank=True,null=True)
+    recipe = models.ForeignKey(to=Recipe,on_delete=models.SET_NULL,blank=True,null=True)
 
 # Create your models here.

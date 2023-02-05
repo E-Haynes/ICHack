@@ -8,7 +8,7 @@ import uuid
 from django.http.multipartparser import MultiPartParser
 import json
 from django.contrib.auth.models import User
-from core.models import Fridge, Shelf, Recipe, UserProfile, UserAddedFoodItems
+from core.models import Fridge, Shelf, Recipe, UserProfile, UserAddedFoodItems, FavouriteRecipes
 import django.contrib.auth as auth
 import openfoodfacts
 from django.contrib import messages
@@ -126,7 +126,7 @@ products1 = {
 }
 
 def createPrompt(products):
-    start = "Come up with a recipe with only a few ingredients from: "
+    start = "Come up with a recipe with only a few ingredients from, put the title on the first line and then the rest of the recipe: "
     weight_name_connection = ' g of '
     mid = ""
     connector = " and "
@@ -185,3 +185,62 @@ def yannis_test_view(request):
     recipes = createRecipes(f'{message} \n')
 
     return JsonResponse(recipes, safe=False)
+
+def recipeImage(prompt):
+    response = openai.Image.create(
+    prompt=prompt,
+    n=1,
+    size="1024x1024"
+    )
+    image_url = response['data'][0]['url']
+    return image_url
+
+def generate_a_recipe(request):
+    context = {}
+
+    user_fridge = Fridge.objects.get(owner=request.user)
+    list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
+    
+    products2 = {
+    "name":[],
+    "size":[]
+    }
+    for item in list_of_products:
+        if(item.productName):
+            products2['name'].append(item.productName)
+        else:
+            products2['name'].append(item.brand)
+
+        products2['size'].append(item.weight)
+
+    message = createPrompt(products2)
+    recipes = createRecipes(f'{message} \n')
+
+    recipeTitle = recipes.partition('\n')[0]
+    recipeImageURL = recipeImage(recipeTitle)
+
+    context['recipeImageURL'] = recipeImageURL
+    context['recipeTitle'] = recipeTitle
+    context['recipe'] = recipes
+
+    recipe_obj = Recipe.objects.create(title=recipeTitle,imageURL=recipeImageURL, recipe=recipes)
+    return redirect('view_recipe/'+str(recipe_obj.pk))
+
+def view_recipe(request, recipe_id):
+    recipe_obj = Recipe.objects.get(pk=recipe_id)
+    context = {}
+    context['recipeImageURL'] = recipe_obj.imageURL
+    context['recipeTitle'] = recipe_obj.title
+    context['recipe'] = recipe_obj.recipe
+    context['recipepk'] = recipe_obj.pk
+    return render(request, 'view_recipe.html', context)
+
+def favourite_recipe(request, recipe_id):
+    recipe_obj = Recipe.objects.get(pk=recipe_id)
+    FavouriteRecipes.objects.create(author=request.user, recipe=recipe_obj)
+    return redirect('/recipes')
+
+def recipes_listing(request):
+    context = {}
+    context['recipes'] = FavouriteRecipes.objects.filter(author=request.user)
+    return render(request, 'recipes1.html', context)

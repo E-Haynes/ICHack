@@ -25,5 +25,11 @@ urlpatterns = [
     path('finish_addition/<str:upc>/<str:shelf_id>', views.finish_addition, name="finish_addition"),
     path('remove-item/<str:item_id>/', views.remove_item, name="remove_item"),
     path('list_view/', views.list_view, name="list_view"),
-    path('yannis_test_view/', views.yannis_test_view, name='yannis_test_view')
+    path('yannis_test_view/', views.yannis_test_view, name='yannis_test_view'),
+    path('generate_a_recipe', views.generate_a_recipe, name="generate_a_recipe"),
+    path('view_recipe/<str:recipe_id>', views.view_recipe, name="view_a_recipe"),
+    path('favourite_recipe/<str:recipe_id>', views.favourite_recipe, name="view_a_recipe"),
+    path('recipes_listing/', views.recipes_listing, name="recipes_listing")
+
+
 ]
