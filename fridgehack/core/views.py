@@ -79,7 +79,11 @@ def finish_addition(request,upc,shelf_id):
     if(request.method == 'GET'):
         return render(request, 'finish_addition.html', context)
     if(request.method == 'POST'):
-        UserAddedFoodItems.objects.create(owner = request.user,on_shelf = Shelf.objects.get(pk=shelf_id),brand = product['brand'], productName = product['productName'], weight = product['weight'], servingWeight = product['servingWeight'], labels = product['labels'], imageURL = product['imageURL'], expiry_date=request.POST['expiryDate'])
+        if(request.POST['expiryDate']):
+            expiry_date = request.POST['expiryDate']
+        else:
+            expiry_date = None
+        UserAddedFoodItems.objects.create(owner = request.user,on_shelf = Shelf.objects.get(pk=shelf_id),brand = product['brand'], productName = product['productName'], weight = product['weight'], servingWeight = product['servingWeight'], labels = product['labels'], imageURL = product['imageURL'], expiry_date=expiry_date)
         return redirect('/')
 
 def get_product(code):
