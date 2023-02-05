@@ -16,6 +16,7 @@ import openai
 from django.core import files
 from io import BytesIO
 import requests
+from django.conf import settings
 
 def index(request):
     if(not request.user.is_anonymous):
@@ -130,7 +131,7 @@ def list_view(request):
     print(context['list_of_items'])
     return render(request, 'list_view.html', context)
 
-openai.api_key = "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"
+openai.api_key = settings.OPEN_API_KEY
 
 recipeCommand = ""
 
