@@ -1,0 +1,22 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<h2>Select products for recipe</h2>
+<p>If you want whole of your fridge to apply, just click next</p>
+<form method="post" action="/generate_a_recipe">
+
+{%for item in list_of_items%}
+<div class="form-check">
+    <input name="{{item.pk}}" class="form-check-input" type="checkbox" value="True" id="{{item.pk}}" checked>
+    <label class="form-check-label" for="{{item.pk}}">
+        {{item.productName}} - {{item.brand}} - {%if item.expiry_date %} Use by: {{item.expiry_date}} {%endif%}
+    </label>
+</div>
+
+
+{%endfor%}
+<br>
+<button type="submit" class="btn btn-primary">Next</button>
+
+</form>
+{% endblock %}

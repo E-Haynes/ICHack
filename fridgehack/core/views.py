@@ -8,11 +8,14 @@ import uuid
 from django.http.multipartparser import MultiPartParser
 import json
 from django.contrib.auth.models import User
-from core.models import Fridge, Shelf, Recipe, UserProfile, UserAddedFoodItems
+from core.models import Fridge, Shelf, Recipe, UserProfile, UserAddedFoodItems, FavouriteRecipes
 import django.contrib.auth as auth
 import openfoodfacts
 from django.contrib import messages
 import openai
+from django.core import files
+from io import BytesIO
+import requests
 
 def index(request):
     context = {}
@@ -76,7 +79,11 @@ def finish_addition(request,upc,shelf_id):
     if(request.method == 'GET'):
         return render(request, 'finish_addition.html', context)
     if(request.method == 'POST'):
-        UserAddedFoodItems.objects.create(owner = request.user,on_shelf = Shelf.objects.get(pk=shelf_id),brand = product['brand'], productName = product['productName'], weight = product['weight'], servingWeight = product['servingWeight'], labels = product['labels'], imageURL = product['imageURL'], expiry_date=request.POST['expiryDate'])
+        if(request.POST['expiryDate']):
+            expiry_date = request.POST['expiryDate']
+        else:
+            expiry_date = None
+        UserAddedFoodItems.objects.create(owner = request.user,on_shelf = Shelf.objects.get(pk=shelf_id),brand = product['brand'], productName = product['productName'], weight = product['weight'], servingWeight = product['servingWeight'], labels = product['labels'], imageURL = product['imageURL'], expiry_date=expiry_date)
         return redirect('/')
 
 def get_product(code):
@@ -126,7 +133,7 @@ products1 = {
 }
 
 def createPrompt(products):
-    start = "Come up with a recipe with only a few ingredients from: "
+    start = "Come up with a recipe with only a few ingredients from, put the title on the first line and then the rest of the recipe: "
     weight_name_connection = ' g of '
     mid = ""
     connector = " and "
@@ -144,7 +151,7 @@ def createPrompt(products):
                 mid = mid + connector + f'{products["size"][index]} g of {item}'
             else:
                 mid = mid + connector + f'{item}'
-
+            
 
 
 
@@ -168,7 +175,7 @@ def createRecipes(prompt):
 def yannis_test_view(request):
     user_fridge = Fridge.objects.get(owner=request.user)
     list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
-
+    
     products2 = {
     "name":[],
     "size":[]
@@ -185,3 +192,97 @@ def yannis_test_view(request):
     recipes = createRecipes(f'{message} \n')
 
     return JsonResponse(recipes, safe=False)
+
+def recipeImage(prompt):
+    response = openai.Image.create(
+    prompt=prompt,
+    n=1,
+    size="256x256"
+    )
+    image_url = response['data'][0]['url']
+    return image_url
+
+def generate_a_recipe(request):
+    context = {}
+    final = []
+    list_pks = list(request.POST.items())
+    for item in list_pks:
+        final.append(item[0])
+
+    user_fridge = Fridge.objects.get(owner=request.user)
+    list_of_products= UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge,pk__in=final).order_by('expiry_date')
+    
+    products2 = {
+    "name":[],
+    "size":[]
+    }
+    for item in list_of_products:
+        if(item.productName):
+            products2['name'].append(item.productName)
+        else:
+            products2['name'].append(item.brand)
+
+        products2['size'].append(item.weight)
+
+    message = createPrompt(products2)
+    recipes = createRecipes(f'{message} \n')
+
+    recipeTitle = recipes.partition('\n')[0]
+    recipeImageURL = recipeImage(recipeTitle)
+
+    context['recipeImageURL'] = recipeImageURL
+    context['recipeTitle'] = recipeTitle
+    context['recipe'] = recipes
+
+    recipe_obj = Recipe.objects.create(title=recipeTitle,imageURL=recipeImageURL, recipe=recipes)
+    url = recipeImageURL
+    resp = requests.get(url)
+    
+
+    fp = BytesIO()
+    fp.write(resp.content)
+    file_name = url.split("/")[-1]  # There's probably a better way of doing this but this is just a quick example
+    recipe_obj.image_field.save(file_name+'.png', files.File(fp))
+
+    return redirect('view_recipe/'+str(recipe_obj.pk))
+
+def view_recipe(request, recipe_id):
+    recipe_obj = Recipe.objects.get(pk=recipe_id)
+    context = {}
+    context['recipeImageURL'] = recipe_obj.imageURL
+    context['recipeTitle'] = recipe_obj.title
+    context['recipe'] = recipe_obj.recipe
+    context['recipepk'] = recipe_obj.pk
+    if(recipe_obj.image_field):
+        context['image_field'] = recipe_obj.image_field.url
+    else:
+        context['image_field'] = None
+
+    return render(request, 'view_recipe.html', context)
+
+def favourite_recipe(request, recipe_id):
+    recipe_obj = Recipe.objects.get(pk=recipe_id)
+    FavouriteRecipes.objects.create(author=request.user, recipe=recipe_obj)
+    return redirect('/recipes_listing')
+
+def recipes_listing(request):
+    context = {}
+    context['recipes'] = FavouriteRecipes.objects.filter(author=request.user)
+    return render(request, 'recipes1.html', context)
+
+def select_items_for_recipe(request):
+    context = {}
+    user_fridge = Fridge.objects.get(owner=request.user)
+    context['list_of_items'] = UserAddedFoodItems.objects.filter(on_shelf__fridge=user_fridge).order_by('expiry_date')
+    return render(request, 'select_items_for_recipe.html', context)
+
+def remove_favourite(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    item_to_remove = FavouriteRecipes.objects.get(recipe=recipe, author=request.user)
+    messages.error(request, f'{item_to_remove.recipe.title} removed from favourites.')
+    item_to_remove.delete()
+
+    return redirect('/recipes_listing')
+
+
+
