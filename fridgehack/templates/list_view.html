@@ -21,9 +21,10 @@
       <a href="/view_recipe/{{recipe.recipe.pk}}">
     <img height="200" src="{%if recipe.recipe.image_field %} {{recipe.recipe.image_field.url}} {%endif%}">
     <br><br>  
-    <h3>{{recipe.recipe.title}}     <button onclick="window.location='/remove-fav/{{recipe.recipe.pk}}'" class="btn-danger btn btn-sm">Remove</button>
+    <h3>{{recipe.recipe.title}}    
     </h3>
       </a>
+      <button onclick="window.location='/remove-fav/{{recipe.recipe.pk}}'" class="btn-danger btn btn-sm">Remove</button>
     <hr>
   </div>
     {% endfor %}
